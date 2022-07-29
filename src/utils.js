@@ -496,7 +496,7 @@ function isProductionMode(loaderContext) {
   return loaderContext.mode === "production" || !loaderContext.mode;
 }
 
-const defaultMinimizerOptions = {
+export const defaultMinimizerOptions = {
   caseSensitive: true,
   // `collapseBooleanAttributes` is not always safe, since this can break CSS attribute selectors and not safe for XHTML
   collapseWhitespace: true,
@@ -1122,7 +1122,14 @@ function getSourcesOption(rawOptions) {
 
   const sources = normalizeSourcesList(rawOptions.sources.list);
 
-  return { list: sources, urlFilter: rawOptions.sources.urlFilter };
+  return {
+    list: sources,
+    urlFilter: rawOptions.sources.urlFilter,
+    scriptingEnabled:
+      typeof rawOptions.sources.scriptingEnabled === "undefined"
+        ? true
+        : rawOptions.sources.scriptingEnabled,
+  };
 }
 
 export function normalizeOptions(rawOptions, loaderContext) {
@@ -1137,12 +1144,12 @@ export function normalizeOptions(rawOptions, loaderContext) {
 
 export function pluginRunner(plugins) {
   return {
-    process: (content) => {
+    async process(content) {
       const result = {};
 
       for (const plugin of plugins) {
-        // eslint-disable-next-line no-param-reassign
-        content = plugin(content, result);
+        // eslint-disable-next-line no-param-reassign, no-await-in-loop
+        content = await plugin(content, result);
       }
 
       result.html = content;
@@ -1169,10 +1176,14 @@ export function getImportCode(html, loaderContext, imports, options) {
     return "";
   }
 
-  const fileURLToHelper = contextify(
-    loaderContext.context,
-    require.resolve("./runtime/getUrl.js")
-  );
+  // TODO simpify in the next major release
+  const getURLRuntime = require.resolve("./runtime/getUrl.js");
+  const context = loaderContext.context || loaderContext.rootContext;
+  const fileURLToHelper =
+    typeof loaderContext.utils !== "undefined" &&
+    typeof loaderContext.utils.contextify === "function"
+      ? loaderContext.utils.contextify(context, getURLRuntime)
+      : contextify(context, getURLRuntime);
 
   let code = options.esModule
     ? `import ${GET_SOURCE_FROM_IMPORT_NAME} from "${fileURLToHelper}";\n`
@@ -1232,6 +1243,9 @@ export function getModuleCode(html, replacements) {
       );
     }
   }
+
+  // Replaces "<script>" or "</script>" to "<" + "script>" or "<" + "/script>".
+  code = code.replace(/<(\/?script)/g, (_, s) => `<" + "${s}`);
 
   return `// Module\n${replacersCode}var code = ${code};\n`;
 }

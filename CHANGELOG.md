@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/webpack-contrib/html-loader/compare/v4.0.0...v4.1.0) (2022-07-11)
+
+
+### Features
+
+* added the `scriptingEnabled` option ([#448](https://github.com/webpack-contrib/html-loader/issues/448)) ([6ed9f9c](https://github.com/webpack-contrib/html-loader/commit/6ed9f9c8df1e8ac2722bed01a9d28b660d64e744))
+
+### [4.0.0](https://github.com/webpack-contrib/html-loader/compare/v3.1.0...v4.0.0) (2022-06-15)
+
+### ⚠ BREAKING CHANGES
+
+* minimum supported `Node.js` version is `14.15.0`
+* update `parse5` to `7.0.0`
+
+
+### Bug Fixes
+
+* handle text with `<script>` in the `script` element ([#444](https://github.com/webpack-contrib/html-loader/issues/444)) ([9949d82](https://github.com/webpack-contrib/html-loader/commit/9949d825f5026951700a1f57c0d8a88970762a0a))
+
+## [3.1.0](https://github.com/webpack-contrib/html-loader/compare/v3.0.1...v3.1.0) (2022-01-08)
+
+
+### Features
+
+* add possibility to extend default minimize options ([#414](https://github.com/webpack-contrib/html-loader/issues/414)) ([0fa36af](https://github.com/webpack-contrib/html-loader/commit/0fa36af3950adecf49efc875694c327d0137347f))
+
+### [3.0.1](https://github.com/webpack-contrib/html-loader/compare/v3.0.0...v3.0.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* context for loader without resource ([#409](https://github.com/webpack-contrib/html-loader/issues/409)) ([eb08a58](https://github.com/webpack-contrib/html-loader/commit/eb08a58fab9038d514e1fe61a78e44332e5e2e7f))
+* handle attributes without tag ([#410](https://github.com/webpack-contrib/html-loader/issues/410)) ([e5d5fd8](https://github.com/webpack-contrib/html-loader/commit/e5d5fd87b04c894ad6c9c5b6a4e47ef56cf9e89f))
+
+## [3.0.0](https://github.com/webpack-contrib/html-loader/compare/v2.1.2...v3.0.0) (2021-10-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* minimum supported `Node.js` version is `12.13.0`
+
+### Features
+
+* output link and descriptions on errors ([#391](https://github.com/webpack-contrib/html-loader/issues/391)) ([f662d66](https://github.com/webpack-contrib/html-loader/commit/f662d66406e46931e1da740309e6459cd655f408))
+* update minimizer ([#406](https://github.com/webpack-contrib/html-loader/issues/406)) ([4e2a739](https://github.com/webpack-contrib/html-loader/commit/4e2a739ea1696141c2a9a1cb86882a3addd4d73e))
+
 ### [2.1.2](https://github.com/webpack-contrib/html-loader/compare/v2.1.1...v2.1.2) (2021-03-09)
 
 

@@ -1,4 +1,4 @@
-import parse5 from "parse5";
+import { parse } from "parse5";
 
 import {
   traverse,
@@ -10,7 +10,10 @@ import {
 export default (options) =>
   function process(html) {
     const sources = [];
-    const document = parse5.parse(html, { sourceCodeLocationInfo: true });
+    const document = parse(html, {
+      sourceCodeLocationInfo: true,
+      scriptingEnabled: options.sources.scriptingEnabled,
+    });
 
     let needIgnore = false;
 
@@ -41,11 +44,12 @@ export default (options) =>
 
         name = attribute.prefix ? `${attribute.prefix}:${name}` : name;
 
-        const handlers =
-          options.sources.list.get(tagName.toLowerCase()) ||
-          options.sources.list.get("*");
+        const handlers = new Map([
+          ...(options.sources.list.get("*") || new Map()),
+          ...(options.sources.list.get(tagName.toLowerCase()) || new Map()),
+        ]);
 
-        if (!handlers) {
+        if (handlers.size === 0) {
           return;
         }
 
